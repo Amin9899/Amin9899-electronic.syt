@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>ابزار محاسبه‌گر مدار</title>
+    <link rel="icon" href="icon.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("NEIjlGcWX2VNC4uCR");
+        })();
+    </script>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Tahoma", sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #22294a;
+            padding: 20px 10px;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 15px 10px;
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+        .main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-center-box {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        #emailIcon {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 8px 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            transition: 0.3s;
+            z-index: 1001;
+        }
+        #emailIcon:hover {
+            background-color: #00e1ff;
+            color: #22294a;
+        }
+        #contactFormOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        #contactForm {
+            background-color: white;
+            color: black;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            direction: rtl;
+        }
+        #contactForm h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+        #contactForm input,
+        #contactForm textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        #contactForm button {
+            width: 100%;
+            padding: 12px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        #contactForm button:hover {
+            background-color: #556cd6;
+        }
+        .closeForm {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #333;
+        }
+        .emoji-picker {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .emoji-picker span {
+            font-size: 22px;
+            cursor: pointer;
+            margin: 5px;
+            transition: 0.2s;
+        }
+        .emoji-picker span:hover {
+            transform: scale(1.2);
+        }
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex-direction: row;
+                width: 100%;
+                height: auto;
+            }
+            .main {
+                padding: 10px;
+            }
+            .top-center-box {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button class="btn" onclick="location.href='resistors.html'">مقاومت</button>
+        <button class="btn" onclick="location.href='capacitors.html'">خازن</button>
+        <button class="btn" onclick="location.href='inductors.html'">سلف</button>
+        <button class="btn" onclick="location.href='ohms.html'">قانون اهم</button>
+        <button class="btn" onclick="location.href='power.html'">توان الکتریکی</button>
+        <button class="btn" onclick="location.href='frequency.html'">فرکانس</button>
+    </div>
+    <div class="main">
+        <div class="top-center-box"></div>
+    </div>
+    <div id="emailIcon" onclick="showForm()">
+        <i class="fas fa-envelope"></i>
+    </div>
+    <div id="contactFormOverlay">
+        <form id="contactForm" onsubmit="sendEmail(event)">
+            <div class="closeForm" onclick="hideForm()">&times;</div>
+            <h2>ارتباط با ما</h2>
+            <input type="text" name="from_name" placeholder="نام شما" required />
+            <input type="email" name="from_email" placeholder="ایمیل شما" required />
+            <textarea rows="5" name="message" id="message" placeholder="پیام شما" required></textarea>
+            <div class="emoji-picker">
+                <span onclick="addEmoji('😊')">😊</span>
+                <span onclick="addEmoji('👍')">👍</span>
+                <span onclick="addEmoji('🎉')">🎉</span>
+                <span onclick="addEmoji('❤️')">❤️</span>
+                <span onclick="addEmoji('🔥')">🔥</span>
+            </div>
+            <button type="submit">ارسال</button>
+        </form>
+    </div>
+    <script>
+        function showForm() {
+            document.getElementById("contactFormOverlay").style.display = "flex";
+        }
+        function hideForm() {
+            document.getElementById("contactFormOverlay").style.display = "none";
+        }
+        function addEmoji(emoji) {
+            const textarea = document.getElementById("message");
+            textarea.value += emoji;
+            textarea.focus();
+        }
+        function containsBadWords(text) {
+            const badWords = ["فحش", "ناسزا", "لعنت", "بد", "کثیف", "احمق", "بی‌ادب"];
+            const pattern = new RegExp(badWords.join("|"), "i");
+            return pattern.test(text);
+        }
+        function sendEmail(e) {
+            e.preventDefault();
+            const form = document.getElementById("contactForm");
+            const message = form.message.value;
+            if (containsBadWords(message)) {
+                alert("لطفاً از نوشتن کلمات نامناسب خودداری کنید.");
+                return;
+            }
+            emailjs.sendForm("service_8xfmf64", "template_3gjor5v", form)
+                .then(() => {
+                    alert("پیام شما با موفقیت ارسال شد! ممنون از تماس شما.");
+                    form.reset();
+                    hideForm();
+                })
+                .catch((error) => {
+                    alert("خطا در ارسال پیام. لطفاً دوباره تلاش کنید.");
+                    console.error("EmailJS error:", error);
+                });
+        }
+    </script>
+</body>
+</html>
