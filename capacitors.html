@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>محاسبه خازن</title>
+  <style>
+ @media screen and (max-width: 600px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  input {
+    width: 90%;
+  }
+
+  .cap-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cap-row button.remove {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  button, select {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  #circuit svg {
+    width: 100% !important;
+  }
+}
+ 
+    body {
+      font-family: "Tahoma", sans-serif;
+      background: linear-gradient(135deg, #a8dadc, #457b9d);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    input, select, button {
+      padding: 10px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input {
+      width: 60%;
+    }
+
+    button {
+      background-color: #1abc9c;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #16a085;
+    }
+
+    .cap-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 5px 0;
+    }
+
+    .cap-row button.remove {
+      background-color: crimson;
+      font-size: 0.9rem;
+    }
+
+    #circuit svg {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .wire {
+      stroke: #ffffff;
+      stroke-width: 4;
+    }
+
+    .capacitor {
+      stroke-width: 4;
+    }
+
+    .flow {
+      stroke: yellow;
+      stroke-dasharray: 6;
+      stroke-width: 2;
+      animation: flowAnim 1s linear infinite;
+    }
+
+    @keyframes flowAnim {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 12; }
+    }
+
+    .back-btn {
+      margin-top: 30px;
+      background: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>محاسبه ظرفیت کل خازن‌ها</h2>
+
+    <select id="connectionType" onchange="drawCircuit()">
+      <option value="series">اتصال سری</option>
+      <option value="parallel">اتصال موازی</option>
+    </select>
+
+    <select id="unit">
+      <option value="1e-9">نانو فاراد (nF)</option>
+      <option value="1e-6" selected>میکرو فاراد (µF)</option>
+      <option value="1e-3">میلی فاراد (mF)</option>
+    </select>
+
+    <div id="capacitorInputs"></div>
+
+    <button onclick="addInput()">افزودن خازن</button>
+    <button onclick="calculate()">محاسبه</button>
+
+    <div id="result"></div>
+
+    <div id="circuit"></div>
+
+    <button class="back-btn" onclick="location.href='home.html'">بازگشت به صفحه اصلی</button>
+  </div>
+
+  <script>
+    function addInput() {
+      const container = document.getElementById('capacitorInputs');
+      const row = document.createElement('div');
+      row.className = 'cap-row';
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.placeholder = 'مقدار خازن';
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'حذف';
+      removeBtn.className = 'remove';
+      removeBtn.onclick = () => {
+        row.remove();
+        drawCircuit();
+      };
+
+      input.oninput = drawCircuit;
+
+      row.appendChild(input);
+      row.appendChild(removeBtn);
+      container.appendChild(row);
+
+      drawCircuit();
+    }
+
+    function calculate() {
+      const type = document.getElementById('connectionType').value;
+      const unitFactor = parseFloat(document.getElementById('unit').value);
+      const inputs = document.querySelectorAll('#capacitorInputs input');
+
+      let values = [];
+      inputs.forEach(input => {
+        const val = parseFloat(input.value);
+        if (!isNaN(val)) values.push(val * unitFactor);
+      });
+
+      if (values.length === 0) {
+        document.getElementById('result').innerText = "حداقل یک مقدار وارد کنید.";
+        return;
+      }
+
+      let total;
+      if (type === 'series') {
+        total = 1 / values.reduce((sum, c) => sum + (1 / c), 0);
+      } else {
+        total = values.reduce((sum, c) => sum + c, 0);
+      }
+
+      const result = (total / unitFactor).toFixed(2);
+      const unitText = document.getElementById("unit").options[document.getElementById("unit").selectedIndex].text;
+
+      document.getElementById('result').innerText = `ظرفیت کل: ${result} ${unitText}`;
+    }
+
+    function drawCircuit() {
+      const type = document.getElementById('connectionType').value;
+      const inputs = document.querySelectorAll('#capacitorInputs input');
+      const svgNS = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("height", "150");
+      svg.setAttribute("width", "100%");
+
+      const count = inputs.length;
+      if (count === 0) {
+        document.getElementById("circuit").innerHTML = "";
+        return;
+      }
+
+      if (type === 'series') {
+        let spacing = 80;
+        for (let i = 0; i < count; i++) {
+          let x = 40 + i * spacing;
+
+          let wireLeft = document.createElementNS(svgNS, "line");
+          wireLeft.setAttribute("x1", x - 20);
+          wireLeft.setAttribute("y1", 75);
+          wireLeft.setAttribute("x2", x - 5);
+          wireLeft.setAttribute("y2", 75);
+          wireLeft.setAttribute("class", "wire");
+          svg.appendChild(wireLeft);
+
+          let cap1 = document.createElementNS(svgNS, "line");
+          cap1.setAttribute("x1", x - 5);
+          cap1.setAttribute("y1", 55);
+          cap1.setAttribute("x2", x - 5);
+          cap1.setAttribute("y2", 95);
+          cap1.setAttribute("class", "capacitor");
+          cap1.setAttribute("stroke", "#ffffff");
+          svg.appendChild(cap1);
+
+          let cap2 = document.createElementNS(svgNS, "line");
+          cap2.setAttribute("x1", x + 5);
+          cap2.setAttribute("y1", 55);
+          cap2.setAttribute("x2", x + 5);
+          cap2.setAttribute("y2", 95);
+          cap2.setAttribute("class", "capacitor");
+          cap2.setAttribute("stroke", "#80d4e0");
+          svg.appendChild(cap2);
+
+          let wireRight = document.createElementNS(svgNS, "line");
+          wireRight.setAttribute("x1", x + 5);
+          wireRight.setAttribute("y1", 75);
+          wireRight.setAttribute("x2", x + 20);
+          wireRight.setAttribute("y2", 75);
+          wireRight.setAttribute("class", "wire");
+          svg.appendChild(wireRight);
+
+          let flow = document.createElementNS(svgNS, "line");
+          flow.setAttribute("x1", x - 10);
+          flow.setAttribute("y1", 70);
+          flow.setAttribute("x2", x + 20);
+          flow.setAttribute("y2", 70);
+          flow.setAttribute("class", "flow");
+          svg.appendChild(flow);
+        }
+      } else {
+        let spacing = 120;
+        for (let i = 0; i < count; i++) {
+          let y = 20 + i * 80;
+
+          let wireTop = document.createElementNS(svgNS, "line");
+          wireTop.setAttribute("x1", 100);
+          wireTop.setAttribute("y1", y);
+          wireTop.setAttribute("x2", 100);
+          wireTop.setAttribute("y2", y + 20);
+          wireTop.setAttribute("class", "wire");
+          svg.appendChild(wireTop);
+
+          let cap1 = document.createElementNS(svgNS, "line");
+          cap1.setAttribute("x1", 85);
+          cap1.setAttribute("y1", y + 20);
+          cap1.setAttribute("x2", 115);
+          cap1.setAttribute("y2", y + 20);
+          cap1.setAttribute("class", "capacitor");
+          cap1.setAttribute("stroke", "#ffffff");
+          svg.appendChild(cap1);
+
+          let cap2 = document.createElementNS(svgNS, "line");
+          cap2.setAttribute("x1", 85);
+          cap2.setAttribute("y1", y + 30);
+          cap2.setAttribute("x2", 115);
+          cap2.setAttribute("y2", y + 30);
+          cap2.setAttribute("class", "capacitor");
+          cap2.setAttribute("stroke", "#80d4e0");
+          svg.appendChild(cap2);
+
+          let wireBottom = document.createElementNS(svgNS, "line");
+          wireBottom.setAttribute("x1", 100);
+          wireBottom.setAttribute("y1", y + 30);
+          wireBottom.setAttribute("x2", 100);
+          wireBottom.setAttribute("y2", y + 50);
+          wireBottom.setAttribute("class", "wire");
+          svg.appendChild(wireBottom);
+
+          let flow = document.createElementNS(svgNS, "line");
+          flow.setAttribute("x1", 95);
+          flow.setAttribute("y1", y + 25);
+          flow.setAttribute("x2", 105);
+          flow.setAttribute("y2", y + 25);
+          flow.setAttribute("class", "flow");
+          svg.appendChild(flow);
+        }
+      }
+
+      document.getElementById("circuit").innerHTML = "";
+      document.getElementById("circuit").appendChild(svg);
+    }
+
+    // افزودن ورودی‌های اولیه
+    addInput();
+    addInput();
+  </script>
+</body>
+</html>

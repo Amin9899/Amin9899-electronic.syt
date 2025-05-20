@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+  <meta charset="UTF-8">
+  <title>محاسبه سلف</title>
+  <style>
+ @media screen and (max-width: 600px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  input {
+    width: 90%;
+  }
+
+  .cap-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cap-row button.remove {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  button, select {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  #circuit svg {
+    width: 100% !important;
+  }
+}
+
+    body {
+      font-family: "Tahoma", sans-serif;
+      background: linear-gradient(135deg, #a8dadc, #457b9d);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input {
+      width: 60%;
+    }
+    button {
+      background-color: #1abc9c;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #16a085;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .ind-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 5px 0;
+    }
+    .ind-row button.remove {
+      background-color: crimson;
+      font-size: 0.9rem;
+    }
+    .circuit {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .inductor {
+      width: 60px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff, #66d6d6);
+      border: 2px solid #0a9396;
+      position: relative;
+      margin: 0 10px;
+    }
+    .inductor:before, .inductor:after {
+      content: '';
+      width: 20px;
+      height: 4px;
+      background: #fff;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .inductor:before { left: -20px; }
+    .inductor:after { right: -20px; }
+    .flow {
+      width: 10px;
+      height: 10px;
+      background: yellow;
+      border-radius: 50%;
+      position: absolute;
+      animation: flow 2s linear infinite;
+    }
+    @keyframes flow {
+      0% { left: 0; top: 50%; opacity: 0.2; }
+      50% { left: 50%; top: 20%; opacity: 1; }
+      100% { left: 100%; top: 50%; opacity: 0.2; }
+    }
+    .back-btn {
+      margin-top: 40px;
+      padding: 10px 20px;
+      background-color: #e63946;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>محاسبه اندوکتانس کل سلف‌ها</h2>
+    
+    <select id="connectionType">
+      <option value="series">اتصال سری</option>
+      <option value="parallel">اتصال موازی</option>
+    </select>
+
+    <select id="unit">
+      <option value="1e-3">میلی هانری (mH)</option>
+      <option value="1" selected>هانری (H)</option>
+    </select>
+    
+    <div id="inductorInputs"></div>
+
+    <button onclick="addInput()">افزودن سلف</button>
+    <button onclick="calculate()">محاسبه</button>
+
+    <div id="result"></div>
+    <div class="circuit" id="circuit"></div>
+
+    <button class="back-btn" onclick="location.href='home.html'">بازگشت به صفحه اصلی</button>
+  </div>
+
+  <script>
+    function addInput() {
+      const container = document.getElementById('inductorInputs');
+      const row = document.createElement('div');
+      row.className = 'ind-row';
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.placeholder = 'مقدار سلف';
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'حذف';
+      removeBtn.className = 'remove';
+      removeBtn.onclick = () => row.remove();
+
+      row.appendChild(input);
+      row.appendChild(removeBtn);
+      container.appendChild(row);
+    }
+
+    function calculate() {
+      const type = document.getElementById('connectionType').value;
+      const unitFactor = parseFloat(document.getElementById('unit').value);
+      const inputs = document.querySelectorAll('#inductorInputs input');
+
+      let values = [];
+      inputs.forEach(input => {
+        const val = parseFloat(input.value);
+        if (!isNaN(val)) values.push(val * unitFactor);
+      });
+
+      if (values.length === 0) {
+        document.getElementById('result').innerText = "حداقل یک مقدار وارد کنید.";
+        return;
+      }
+
+      let total;
+      if (type === 'series') {
+        total = values.reduce((sum, l) => sum + l, 0);
+      } else {
+        total = 1 / values.reduce((sum, l) => sum + (1 / l), 0);
+      }
+
+      const result = (total / unitFactor).toFixed(2);
+      const unitText = document.getElementById("unit").options[document.getElementById("unit").selectedIndex].text;
+      document.getElementById('result').innerText = `مقدار کل سلف‌ها: ${result} ${unitText}`;
+
+      drawCircuit(values.length);
+    }
+
+    function drawCircuit(count) {
+      const container = document.getElementById('circuit');
+      container.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const inductor = document.createElement('div');
+        inductor.className = 'inductor';
+
+        const flow = document.createElement('div');
+        flow.className = 'flow';
+
+        inductor.appendChild(flow);
+        container.appendChild(inductor);
+      }
+    }
+
+    addInput();
+    addInput();
+  </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>محاسبه توان الکتریکی</title>
+  <style>
+   @media screen and (max-width: 600px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  input {
+    width: 90%;
+  }
+
+  .cap-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cap-row button.remove {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  button, select {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  #circuit svg {
+    width: 100% !important;
+  }
+}
+
+    body {
+      font-family: "Tahoma", sans-serif;
+      background: linear-gradient(135deg, #a8dadc, #457b9d);
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input {
+      width: 40%;
+    }
+    button {
+      background-color: #1abc9c;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #16a085;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    svg {
+      margin-top: 30px;
+    }
+    .back-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: crimson;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>محاسبه توان الکتریکی</h2>
+    <input type="number" id="voltage" placeholder="ولتاژ (V)">
+    <input type="number" id="current" placeholder="جریان (A)">
+    <button onclick="calculate()">محاسبه توان</button>
+    <div id="result"></div>
+    
+    <svg width="300" height="100">
+      <line x1="0" y1="50" x2="300" y2="50" stroke="#fff" stroke-width="4"/>
+      <circle id="flow" cx="0" cy="50" r="6" fill="#ff0">
+        <animate attributeName="cx" from="0" to="300" dur="2s" repeatCount="indefinite" />
+      </circle>
+    </svg>
+
+    <button class="back-btn" onclick="location.href='home.html'">بازگشت به صفحه اصلی</button>
+  </div>
+
+  <script>
+    function calculate() {
+      const voltage = parseFloat(document.getElementById("voltage").value);
+      const current = parseFloat(document.getElementById("current").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(voltage) || isNaN(current)) {
+        resultDiv.innerText = "لطفاً ولتاژ و جریان را وارد کنید.";
+        return;
+      }
+
+      const power = voltage * current;
+      resultDiv.innerText = `توان الکتریکی: ${power.toFixed(2)} وات`;
+    }
+  </script>
+</body>
+</html>

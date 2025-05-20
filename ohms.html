@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>قانون اهم</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Vazir", "Tahoma", sans-serif;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            color: #333;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            max-width: 500px;
+            margin: auto;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+
+        p.formula {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #023e8a;
+            margin-bottom: 30px;
+        }
+
+        input {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+            border: 2px solid #90e0ef;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #00b4d8;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #0077b6;
+        }
+
+        .result {
+            margin-top: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007f5f;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            background-color: #ef233c;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media screen and (max-width: 600px) {
+            input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>قانون اهم</h1>
+        <p class="formula">V = I × R</p>
+
+        <input type="number" id="current" placeholder="شدت جریان (I) بر حسب آمپر">
+        <input type="number" id="resistance" placeholder="مقاومت (R) بر حسب اهم">
+
+        <br>
+        <button onclick="calculateOhm()">محاسبه ولتاژ</button>
+
+        <div id="result" class="result"></div>
+
+        <button class="back-btn" onclick="location.href='home.html'">بازگشت به صفحه اصلی</button>
+    </div>
+
+    <script>
+        function calculateOhm() {
+            const I = parseFloat(document.getElementById("current").value);
+            const R = parseFloat(document.getElementById("resistance").value);
+            const resultDiv = document.getElementById("result");
+
+            if (isNaN(I) || isNaN(R)) {
+                resultDiv.innerText = "لطفاً هر دو مقدار را وارد کنید.";
+                return;
+            }
+
+            const V = (I * R).toFixed(2);
+            resultDiv.innerText = `ولتاژ (V) برابر است با: ${V} ولت`;
+        }
+    </script>
+</body>
+</html>
