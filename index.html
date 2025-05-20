@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa">
 <head>
@@ -21,6 +20,7 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
+            flex-direction: column;
         }
         .sidebar {
             width: 200px;
@@ -53,14 +53,45 @@
             display: flex;
             flex-direction: column;
         }
+        .title-header {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+        }
         .top-center-box {
             width: 100%;
-            height: 100%;
             background-image: url('https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
             background-position: center;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-content: flex-start;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        .top-center-box .definitions-button {
+            background: linear-gradient(135deg, #f6ffdd, #c2ffd8);
+            color: #222;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s ease;
+            font-family: "Vazir", "Tahoma", sans-serif;
+        }
+        .top-center-box .definitions-button:hover {
+            background: linear-gradient(135deg, #ffffff, #b3ffe0);
+            transform: translateY(-3px);
         }
         #emailIcon {
             position: fixed;
@@ -159,31 +190,46 @@
                 flex-direction: row;
                 width: 100%;
                 height: auto;
+                overflow-x: auto;
             }
             .main {
                 padding: 10px;
             }
             .top-center-box {
-                height: 250px;
+                height: auto;
             }
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <button class="btn" onclick="location.href='resistors.html'">مقاومت</button>
-        <button class="btn" onclick="location.href='capacitors.html'">خازن</button>
-        <button class="btn" onclick="location.href='inductors.html'">سلف</button>
-        <button class="btn" onclick="location.href='ohms.html'">قانون اهم</button>
-        <button class="btn" onclick="location.href='power.html'">توان الکتریکی</button>
-        <button class="btn" onclick="location.href='frequency.html'">فرکانس</button>
+    <div style="display: flex; flex: 1;">
+        <div class="sidebar">
+            <button class="btn" onclick="goToPage('resistors.html')">مقاومت</button>
+            <button class="btn" onclick="goToPage('capacitors.html')">خازن</button>
+            <button class="btn" onclick="goToPage('inductors.html')">سلف</button>
+            <button class="btn" onclick="goToPage('ohms.html')">قانون اهم</button>
+            <button class="btn" onclick="goToPage('power.html')">توان الکتریکی</button>
+            <button class="btn" onclick="goToPage('frequency.html')">فرکانس</button>
+        </div>
+
+        <div class="main">
+            <div class="title-header">electronic-SYT</div>
+
+            <div class="top-center-box">
+                <button class="definitions-button" onclick="goToPage('definitions.html')">تعاریف الکتریکی</button>
+                <button class="definitions-button" onclick="goToPage('principles.html')">اصول مدار</button>
+                <button class="definitions-button" onclick="goToPage('units.html')">واحدهای استاندارد</button>
+                <button class="definitions-button" onclick="goToPage('quiz.html')">شماتیک های مهم</button>
+                <button class="definitions-button" onclick="goToPage('konkur.html')">ایمنی در برق</button>
+                <button class="definitions-button" onclick="goToPage('calculator.html')">ماشین‌حساب پیشرفته</button>
+            </div>
+        </div>
     </div>
-    <div class="main">
-        <div class="top-center-box"></div>
-    </div>
+
     <div id="emailIcon" onclick="showForm()">
         <i class="fas fa-envelope"></i>
     </div>
+
     <div id="contactFormOverlay">
         <form id="contactForm" onsubmit="sendEmail(event)">
             <div class="closeForm" onclick="hideForm()">&times;</div>
@@ -201,6 +247,7 @@
             <button type="submit">ارسال</button>
         </form>
     </div>
+
     <script>
         function showForm() {
             document.getElementById("contactFormOverlay").style.display = "flex";
@@ -228,14 +275,17 @@
             }
             emailjs.sendForm("service_8xfmf64", "template_3gjor5v", form)
                 .then(() => {
-                    alert("پیام شما با موفقیت ارسال شد! ممنون از تماس شما.");
+                    alert("✅ پیام شما با موفقیت ارسال شد! متشکریم.");
                     form.reset();
                     hideForm();
                 })
                 .catch((error) => {
-                    alert("خطا در ارسال پیام. لطفاً دوباره تلاش کنید.");
+                    alert("❌ خطا در ارسال پیام. لطفاً دوباره تلاش کنید.");
                     console.error("EmailJS error:", error);
                 });
+        }
+        function goToPage(pageName) {
+            window.location.href = pageName;
         }
     </script>
 </body>
