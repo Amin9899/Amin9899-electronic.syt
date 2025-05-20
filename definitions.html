@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8" />
+    <title>تعاریف الکترونیکی - حرفه‌ای</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css');
+
+        body {
+            font-family: 'Vazir', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #1f1f2e, #2a2a3b);
+            color: #f0f0f0;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #00e6ff;
+            text-shadow: 0 0 10px #00e6ff;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            width: 90%;
+            max-width: 500px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .accordion {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .accordion-item {
+            margin-bottom: 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .accordion-header {
+            padding: 15px 20px;
+            background: linear-gradient(90deg, #4a00e0, #8e2de2);
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+        }
+
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-content.open {
+            padding: 15px 20px;
+            max-height: 300px;
+        }
+
+        .category {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00ffe7;
+            border-bottom: 1px solid #00ffe7;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px;">
+    <img src="lightning_icon.png" alt="" style="width: 60px; height: auto; filter: drop-shadow(0 0 8px yellow);">
+    <h1 style="margin: 0; font-size: 2.8rem; font-weight: 900; color: #00e1ff; text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7), 0 0 15px #00e1ff;">
+        تعاریف تجهیزات صنعتی و الکترونیکی
+    </h1>
+</div>
+
+    <input type="text" id="search" placeholder="جستجوی اصطلاح..." />
+
+    <div id="accordion" class="accordion"></div>
+
+    <script>
+        const definitions = {
+            "تجهیزات حفاظتی": {
+                "کلید مینیاتوری MCB": "وسیله‌ای برای قطع مدار در صورت بروز اضافه‌جریان یا اتصال کوتاه.",
+                "کلید RCD": "محافظ نشتی جریان برای جلوگیری از برق‌گرفتگی در صورت تماس انسان با برق.",
+                "رله شیشه‌ای": "رله‌ای با بدنه شفاف برای کنترل مدار با کمک آهن‌ربا و سیم‌پیچ.",
+                "رله ضربه‌ای": "رله‌ای که با یک پالس، وضعیت خود را تغییر می‌دهد و پایدار می‌ماند.",
+                "رله ارت فالت": "تشخیص‌دهنده نشتی جریان به زمین برای حفاظت تجهیزات و افراد.",
+                "سرج ارستر": "حفاظت در برابر نوسانات ولتاژ لحظه‌ای مانند صاعقه.",
+            },
+            "کنترل و راه‌اندازی": {
+                "کنتاکتور": "سوئیچ الکترومغناطیسی برای قطع و وصل بارهای قدرت بالا.",
+                "بی متال": "محافظ حرارتی برای قطع مدار در صورت گرمای زیاد موتور.",
+                "کلید چنج اور": "تغییر مسیر جریان بین دو منبع تغذیه.",
+                "رله حفاظت موتور": "محافظ برای جلوگیری از آسیب موتور بر اثر اضافه‌بار یا خطا.",
+                "کلید حرارتی": "محافظ حرارتی که در اثر افزایش دما مدار را قطع می‌کند.",
+            },
+            "درایوها و راه‌اندازها": {
+                "اینورتر": "مبدل برق DC به AC با قابلیت تنظیم فرکانس و سرعت موتور.",
+                "درایو": "سیستم الکترونیکی برای کنترل سرعت و گشتاور موتور الکتریکی.",
+                "سافت استارتر": "راه‌انداز نرم موتور برای جلوگیری از شوک جریان اولیه.",
+            },
+            "کلیدهای قدرت": {
+                "دژنکتور": "کلید قطع‌کننده خودکار برای قطع جریان‌های بالا در خطا.",
+                "کنتاکتور خلا": "کنتاکت‌های درون خلأ برای خاموشی قوس الکتریکی.",
+                "کلید اتوماتیک کامپکت": "ترکیبی از کلید قدرت و محافظ برای قطع خودکار.",
+                "کلید هوایی": "کلید قدرت با مکانیزم باز در ولتاژهای بالا برای پست‌ها.",
+                "سکسیونر": "کلید جداکننده‌ای که تنها در حالت بی‌بار استفاده می‌شود.",
+            },
+            "شبکه و تابلو": {
+                "تابلو برق صنعتی": "محفظه‌ای شامل تجهیزات حفاظتی، کنترلی و قدرت در صنعت.",
+                "رگولاتور بانک خازنی": "تنظیم توان راکتیو با روشن/خاموش کردن خازن‌ها.",
+            },
+            "سایر": {
+                "چراغ سیگنال": "نمایشگر وضعیت روشن یا خطا در تابلوهای برق.",
+                "ولتاژ نامی": "ولتاژی که دستگاه به طور استاندارد برای آن طراحی شده است."
+            }
+        };
+
+        const accordion = document.getElementById('accordion');
+
+        for (const [category, terms] of Object.entries(definitions)) {
+            const catTitle = document.createElement('div');
+            catTitle.className = 'category';
+            catTitle.textContent = category;
+            accordion.appendChild(catTitle);
+
+            for (const [term, definition] of Object.entries(terms)) {
+                const item = document.createElement('div');
+                item.className = 'accordion-item';
+
+                const header = document.createElement('div');
+                header.className = 'accordion-header';
+                header.innerHTML = `<span>${term}</span><i class="fas fa-chevron-down"></i>`;
+
+                const content = document.createElement('div');
+                content.className = 'accordion-content';
+                content.textContent = definition;
+
+                header.addEventListener('click', () => {
+                    const isOpen = content.classList.contains('open');
+                    document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+                    document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+                    if (!isOpen) {
+                        content.classList.add('open');
+                        header.classList.add('active');
+                    }
+                });
+
+                item.appendChild(header);
+                item.appendChild(content);
+                accordion.appendChild(item);
+            }
+        }
+
+        // فیلتر جستجو
+        document.getElementById('search').addEventListener('input', e => {
+            const val = e.target.value.toLowerCase();
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                const text = item.querySelector('.accordion-header span').textContent.toLowerCase();
+                item.style.display = text.includes(val) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
