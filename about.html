@@ -2,74 +2,105 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8" />
-    <title>درباره ما</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>درباره ما | Electronic-SYT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         body {
-            font-family: "Tahoma", sans-serif;
-            background: #f0f2f5;
-            color: #333;
             margin: 0;
-            padding: 0 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+            font-family: 'Vazir', 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
         }
-        header {
-            width: 100%;
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
             max-width: 900px;
-            padding: 20px 0;
-            border-bottom: 2px solid #ccc;
+            margin: 60px auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.65);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             text-align: center;
-            background: #4a5ccf;
-            color: white;
-            box-shadow: 0 4px 8px rgba(74, 92, 207, 0.3);
+            direction: rtl;
         }
-        main {
-            width: 100%;
-            max-width: 900px;
-            margin-top: 40px;
-            background: white;
-            padding: 30px 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
+
         h1 {
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        p {
+            font-size: 2.8rem;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 10px black;
         }
-        a.back {
+
+        p {
+            font-size: 1.2rem;
+            line-height: 2;
+            text-align: justify;
+            padding: 0 10px;
+        }
+
+        .team-icons {
             margin-top: 30px;
-            display: inline-block;
-            color: #4a5ccf;
-            text-decoration: none;
-            font-weight: 600;
-            border: 2px solid #4a5ccf;
-            padding: 8px 18px;
-            border-radius: 8px;
-            transition: background 0.3s, color 0.3s;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
-        a.back:hover {
-            background: #4a5ccf;
+
+        .team-icons i {
+            font-size: 32px;
+            color: #ffd700;
+            transition: 0.3s;
+        }
+
+        .team-icons i:hover {
+            transform: scale(1.2);
+            color: #ffffff;
+        }
+
+        .back-btn {
+            margin-top: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
             color: white;
+            padding: 14px 26px;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <header>
+    <div class="container">
         <h1>درباره ما</h1>
-    </header>
-    <main>
-        <p>سلام! اینجا بخش درباره ماست. می‌تونی اطلاعاتی درباره تیم سازنده، هدف پروژه و هر نکته‌ی مهم دیگه اینجا بنویسی.</p>
-        <p>هدف ما ساخت ابزارهای الکترونیکی و برنامه‌های کاربردی برای کمک به علاقه‌مندان به الکترونیک و برنامه‌نویسی است.</p>
-        <p>اگر سوالی داری یا می‌خوای با ما ارتباط برقرار کنی، از صفحه تماس با ما استفاده کن.</p>
-        <a class="back" href="home.html">&larr; بازگشت به صفحه اصلی</a>
-    </main>
-</body> 
+        <p>
+            ما در Electronic-SYT تلاش می‌کنیم ابزارهایی نوآورانه، کاربردی و دقیق برای علاقه‌مندان، دانش‌آموزان و مهندسان برق فراهم کنیم.
+            این وبسایت با هدف ساده‌سازی محاسبات الکترونیکی، یادگیری بهتر مفاهیم پایه و دسترسی سریع به ابزارهای آموزشی طراحی شده است.
+            تمرکز ما روی طراحی زیبا، کاربری آسان، و دقت علمی است تا شما بتوانید از یادگیری و تحلیل لذت ببرید.
+        </p>
+
+        <div class="team-icons">
+            <i class="fas fa-microchip" title="الکترونیک"></i>
+            <i class="fas fa-bolt" title="قدرت"></i>
+            <i class="fas fa-brain" title="آموزش"></i>
+            <i class="fas fa-code" title="برنامه‌نویسی"></i>
+        </div>
+
+        <button class="back-btn" onclick="window.location.href='home.html'">
+            بازگشت به صفحه اصلی
+        </button>
+    </div>
+</body>
 </html>
