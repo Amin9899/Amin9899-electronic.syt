@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>اصول مداری | آموزش برق</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        body {
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            padding: 40px 20px;
+            line-height: 2;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00e5ff;
+            position: relative;
+        }
+        h1::after, h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #00e5ff;
+            margin: 10px auto;
+            border-radius: 5px;
+            animation: expand 1s ease-out forwards;
+        }
+        section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        section:hover {
+            transform: scale(1.02);
+        }
+        @keyframes expand {
+            from { width: 0; }
+            to { width: 60px; }
+        }
+        .highlight {
+            color: #00ffae;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>اصول مداری در برق</h1>
+
+    <section>
+        <h2>۱. قانون اهم (Ohm's Law)</h2>
+        <p>
+            قانون اهم بیان می‌کند که ولتاژ دو سر یک مقاومت برابر است با جریان عبوری از آن ضرب‌در مقدار مقاومت. یعنی:
+            <span class="highlight">V = I × R</span>
+        </p>
+    </section>
+
+    <section>
+        <h2>۲. قانون کیرشهف (Kirchhoff's Laws)</h2>
+        <p>
+            قانون جریان کیرشهف: مجموع جریان‌های ورودی به یک گره برابر است با مجموع جریان‌های خروجی از آن.
+            <br />
+            قانون ولتاژ کیرشهف: مجموع ولتاژها در یک حلقه بسته برابر صفر است.
+        </p>
+    </section>
+
+    <section>
+        <h2>۳. سری و موازی بستن مقاومت‌ها</h2>
+        <p>
+            در اتصال <span class="highlight">سری</span>: مقاومت کل برابر مجموع مقاومت‌هاست. <br />
+            در اتصال <span class="highlight">موازی</span>: معکوس مقاومت کل برابر است با مجموع معکوس مقاومت‌ها.
+        </p>
+    </section>
+
+    <section>
+        <h2>۴. تقسیم ولتاژ و جریان</h2>
+        <p>
+            در مدارهای سری، ولتاژ تقسیم می‌شود (تقسیم ولتاژ). <br />
+            در مدارهای موازی، جریان تقسیم می‌شود (تقسیم جریان).
+        </p>
+    </section>
+
+    <section>
+        <h2>۵. منابع ولتاژ و جریان</h2>
+        <p>
+            منابع ولتاژ ایده‌آل همیشه یک ولتاژ ثابت تولید می‌کنند؛ منابع جریان ایده‌آل جریان را ثابت نگه می‌دارند بدون توجه به بار متصل.
+        </p>
+    </section>
+
+    <section>
+        <h2>۶. توان الکتریکی</h2>
+        <p>
+            توان برابر است با حاصل ضرب ولتاژ و جریان: <span class="highlight">P = V × I</span>. همچنین می‌توان با استفاده از قانون اهم روابط دیگری نیز نوشت مانند:
+            <br />
+            <span class="highlight">P = I² × R</span> یا <span class="highlight">P = V² / R</span>
+        </p>
+    </section>
+
+    <section>
+        <h2>۷. مدارهای AC و DC</h2>
+        <p>
+            مدار <span class="highlight">DC</span> جریان مستقیم دارد و پلاریته آن ثابت است. <br />
+            مدار <span class="highlight">AC</span> جریان متناوب دارد که جهت آن مرتباً تغییر می‌کند.
+        </p>
+    </section>
+
+    <section>
+        <h2>۸. عناصر اکتیو و پسیو</h2>
+        <p>
+            عناصر <span class="highlight">پسیو</span>: مقاومت، خازن، سلف (توان تولید نمی‌کنند). <br />
+            عناصر <span class="highlight">اکتیو</span>: منابع ولتاژ و جریان (توان تأمین می‌کنند).
+        </p>
+    </section>
+
+</body>
+</html>
+ 
